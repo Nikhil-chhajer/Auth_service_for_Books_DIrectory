@@ -20,7 +20,13 @@ const UserSchema = new mongoose.Schema({
     userId:{
         type:String,
         required:true
-    }
+    },
+    reviews:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Review',
+        }
+    ]
 }, { timestamps: true });
 UserSchema.pre('save', async function (next) {
     const user = this;
@@ -37,17 +43,7 @@ UserSchema.methods.genJWT = function generate() {
         expiresIn:'1h'
     });
 }
-UserSchema.path('favourite').validate(async function(value) {
-    // Accessing the model instance (user) using `this`
-    if (!this.isNew) {
-        // If the user document is not new, skip the validation
-        return true;
-    }
-    // Find if there are any duplicate entries in the favourite array
-    const duplicateBooks = value.filter((bookId, index) => value.indexOf(bookId) !== index);
-    // If there are duplicate books, return false
-    return duplicateBooks.length === 0;
-}, 'Duplicate books found in the favourite list');
+
 const User = mongoose.model('User', UserSchema);
 module.exports = User;
 

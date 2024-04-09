@@ -1,6 +1,5 @@
 const passport=require('passport');
 const authenticate=(req,res,next)=>{
-   
     passport.authenticate('jwt',(err,user)=>{
         if(err)next(err);
         if(!user){

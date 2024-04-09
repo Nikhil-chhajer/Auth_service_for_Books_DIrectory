@@ -65,5 +65,25 @@ class UserService {
             throw error;
         }
     }
+    async findby(data){
+        try {
+            const user=await this.userRepository.findbyId(data);
+            return user;
+        } catch (error) {
+            console.log("something wrong in the Service layer");
+            throw error;
+        }
+    }
+    async reviewcreation(data,reviewId){
+        try {
+            const user=await this.userRepository.findbyId(data);
+            user.reviews.push(reviewId);
+            await user.save();
+            return user;
+        } catch (error) {
+            console.log("something wrong in the Service layer");
+            throw error;
+        }
+    }
 }
 module.exports=UserService;

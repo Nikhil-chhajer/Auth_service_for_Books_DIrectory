@@ -1,4 +1,5 @@
 
+
 const UserService=require('../services/userservice');
 const userservice=new UserService();
 
@@ -58,10 +59,51 @@ const favouritebook=async(req,res)=>{
     }
     
 }
+const find=async(req,res)=>{
+    try {
+        const user=await userservice.findby(req.params.id);
+
+        return res.status(201).json({
+            data:user,
+            message:"successfully user found"
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data:{},
+            success:false,
+            message:'Not able to found user',
+            err:error
+        })
+    }
+
+
+}
+const review=async(req,res)=>{
+    try {
+        const userId=req.body.userId;
+        const reviewId=req.body.reviewId
+        console.log(userId,reviewId)
+        const user=await userservice.reviewcreation(userId,reviewId);
+
+        return res.status(201).json({
+            data:user,
+            message:"successfully user found"
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data:{},
+            success:false,
+            message:'Not able to found user',
+            err:error
+        })
+    }
+}
 
 
 
 
 module.exports={
-    create,signupforToken,favouritebook
+    create,signupforToken,favouritebook,find,review
 }
